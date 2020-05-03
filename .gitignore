@@ -1,5 +1,6 @@
 .directory
 /aufgabe_1/.vscode
-/aufgabe_1/target
-/aufgabe_2/.vscode
-/aufgabe_2/target
+/aufgabe_1/target/
+/aufgabe-2/.vscode
+/aufgabe-2/target/
+
