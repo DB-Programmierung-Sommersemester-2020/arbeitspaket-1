@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import jdbc_client_b.ressources.DBProperties;
+import jdbc_client_a.ressources.DBProperties;
+
 
 public class ConnectionManager {
     
