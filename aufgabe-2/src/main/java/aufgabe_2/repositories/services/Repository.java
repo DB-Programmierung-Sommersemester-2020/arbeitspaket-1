@@ -1,10 +1,10 @@
-package aufgabe_2.repositories.implementations;
+package aufgabe_2.repositories.services;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface Repository <T, K>{
     
-    List<T> getAll();
+    Collection<T> getAll();
     T getById(K id);
     T create(T entity);
     T update(T entity);
