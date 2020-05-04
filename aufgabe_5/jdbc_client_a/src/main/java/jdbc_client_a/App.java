@@ -17,7 +17,7 @@ public class App
         try(Connection connection = ConnectionManager.getInstance().getConnection()){
           
             connection.setAutoCommit(false);
-            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
           
             for(int i = 0; i<=1; i++){
                 try(Statement statement = connection.createStatement()){

@@ -14,7 +14,7 @@ public class App
 
         try(Connection connection = ConnectionManager.getInstance().getConnection()){
             connection.setAutoCommit(false);
-            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             try(Statement statement = connection.createStatement()){
                 System.out.println("Client B -> Transaktion gestartet");
                 scanner.nextLine();
