@@ -1,3 +1,6 @@
 1.a Durchlauf mit READ_COMMITET für beider clients
 als Ergebniss zwei mall kamm Berlin raus, obwohl UPDATE 
 noch nicht commitet wurde.
+1.b Beim Einsatz von TRANSACTION_SERIALIZABLE fuer beider Clients,
+hat Client A auf Commit von Client b gewartet, beim zweiten Durchlauf
+kamm geupdatete Ergebniss raus.

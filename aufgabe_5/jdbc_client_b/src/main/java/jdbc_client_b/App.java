@@ -10,7 +10,7 @@ public class App
     public static void main( String[] args )
     {
         Scanner scanner = new Scanner(System.in);
-        String updateString = "UPDATE Adresse SET ort='Hamburg' WHERE ort='Berlin'";
+        String updateString = "UPDATE Adresse SET ort='Berlin' WHERE ort='Hamburg'";
 
         try(Connection connection = ConnectionManager.getInstance().getConnection()){
             connection.setAutoCommit(false);
