@@ -1,11 +1,14 @@
 package aufgabe_2.repositories.implementations;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -49,21 +52,85 @@ public class AuthorRepository implements AuthorRepositoryService {
     }
 
     @Override
-    public Author create(Author entity) {
-        // TODO Auto-generated method stub
-        return null;
+    public Author create(Author author) {
+        Author lastInsertedAuthor = this.getAll().stream().max(Comparator.comparing(Author::getId))
+                .orElseThrow(NoSuchElementException::new);
+        //SQL - Injection variant waere:  "INSERT INTO Autor VALUES(" + author.Id + "," +author.FirstName + "," + author.LastName +" )"
+        String insertString = "INSERT INTO Autor VALUES(?,?,?)";
+        int nextId = lastInsertedAuthor.Id+1;
+        boolean authorExitsts = (this.getAll().stream().filter(auth -> (auth.Id == author.Id) || 
+                (auth.FirstName.equals(author.FirstName) && auth.LastName.equals(author.LastName))).count()) > 0;
+        int created = 0;
+
+        if(!authorExitsts){
+            try {
+                PreparedStatement statement = connectionService.getConnection().prepareStatement(insertString);
+                statement.setInt(1, nextId);
+                statement.setString(2, author.FirstName);
+                statement.setString(3, author.LastName);
+                created = statement.executeUpdate();
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return (created >0) ? author : null;
     }
 
     @Override
-    public Author update(Author entity) {
-        // TODO Auto-generated method stub
-        return null;
+    public Author update(Author author) {
+        //SQL - Injection variant waere "UPDATE Autor SET vorname = " +author.FirstName + ", nachname = " + author.LastName +" WHERE id = " + author.Id
+        String updateString = "UPDATE Autor SET vorname = ?, nachname = ? WHERE id = ?"; 
+        int updated = 0;
+        if(author.Id > 0){ //
+            try {
+                PreparedStatement statement = connectionService.getConnection().prepareStatement(updateString);
+                statement.setString(1, author.FirstName);
+                statement.setString(2, author.LastName);
+                statement.setInt(3, author.Id);
+                updated = statement.executeUpdate();
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+       
+       
+        return (updated >0) ? author : null;
     }
 
     @Override
-    public Author delete(Author entity) {
-        // TODO Auto-generated method stub
-        return null;
+    public Author delete(Author author) {
+        //SQL - Injection Variant waere: "DELETE FROM " WHERE id = " + author.Id+ " AND vorname = " +author.FirstName + ", AND nachname = " + author.LastName"
+        String deleteString = "DELETE FROM Autor WHERE id = ? AND vorname = ? AND nachname = ?"; 
+        int deleted = 0;
+        try {
+            PreparedStatement statement = connectionService.getConnection().prepareStatement(deleteString);
+            statement.setInt(1, author.Id);
+            statement.setString(2, author.FirstName);
+            statement.setString(3, author.LastName);
+            deleted = statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (deleted >0) ? author : null;
+    }
+
+    public int delete(int id) {
+        //SQL - Injection Variant waere :  "DELETE FROM Autor WHERE id = " + id
+        String deleteString = "DELETE FROM Autor WHERE id = ?"; 
+        int deleted = 0;
+        try {
+            PreparedStatement statement = connectionService.getConnection().prepareStatement(deleteString);
+            statement.setInt(1,id);
+            deleted = statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return deleted;
     }
 
     @Override
