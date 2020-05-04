@@ -44,7 +44,7 @@ public class App
                 }
             }
             connection.setAutoCommit(true);
-            
+            scanner.close();
         }
         catch(SQLException e){
             e.printStackTrace();
