@@ -1,4 +1,4 @@
-package jdbc_client_b.ressources;
+package jdbc_client_a.ressources;
 
 import java.io.IOException;
 import java.io.InputStream;
