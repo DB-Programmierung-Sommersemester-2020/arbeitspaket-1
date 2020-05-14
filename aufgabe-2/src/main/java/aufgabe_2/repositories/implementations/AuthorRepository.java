@@ -55,7 +55,6 @@ public class AuthorRepository implements AuthorRepositoryService {
     public Author create(Author author) {
         Author lastInsertedAuthor = this.getAll().stream().max(Comparator.comparing(Author::getId))
                 .orElseThrow(NoSuchElementException::new);
-        //SQL - Injection variant waere:  "INSERT INTO Autor VALUES(" + author.Id + "," +author.FirstName + "," + author.LastName +" )"
         String insertString = "INSERT INTO Autor VALUES(?,?,?)";
         int nextId = lastInsertedAuthor.Id+1;
         boolean authorExitsts = (this.getAll().stream().filter(auth -> (auth.Id == author.Id) || 
@@ -80,7 +79,6 @@ public class AuthorRepository implements AuthorRepositoryService {
 
     @Override
     public Author update(Author author) {
-        //SQL - Injection variant waere "UPDATE Autor SET vorname = " +author.FirstName + ", nachname = " + author.LastName +" WHERE id = " + author.Id
         String updateString = "UPDATE Autor SET vorname = ?, nachname = ? WHERE id = ?"; 
         int updated = 0;
         if(author.Id > 0){ //
@@ -102,7 +100,6 @@ public class AuthorRepository implements AuthorRepositoryService {
 
     @Override
     public Author delete(Author author) {
-        //SQL - Injection Variant waere: "DELETE FROM " WHERE id = " + author.Id+ " AND vorname = " +author.FirstName + ", AND nachname = " + author.LastName"
         String deleteString = "DELETE FROM Autor WHERE id = ? AND vorname = ? AND nachname = ?"; 
         int deleted = 0;
         try {
@@ -119,7 +116,6 @@ public class AuthorRepository implements AuthorRepositoryService {
     }
 
     public int delete(int id) {
-        //SQL - Injection Variant waere :  "DELETE FROM Autor WHERE id = " + id
         String deleteString = "DELETE FROM Autor WHERE id = ?"; 
         int deleted = 0;
         try {
